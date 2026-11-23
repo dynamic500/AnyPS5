@@ -131,9 +131,9 @@ def main(argv=None):
     if hasattr(sys.stderr, "reconfigure"):
         sys.stderr.reconfigure(encoding="utf-8", errors="backslashreplace")
     parser = argparse.ArgumentParser(description="Prepare size-safe GitHub release notes")
-    parser.add_argument("--input", type=Path, required=True)
-    parser.add_argument("--body", type=Path, required=True)
-    parser.add_argument("--full", type=Path, required=True)
+    parser.add_argument("--input", type=Path, required=True, help="UTF-8 JSON input file with a string 'body' field")
+    parser.add_argument("--body", type=Path, required=True, help="output file for the prepared release body, shortened if needed to fit the limit")
+    parser.add_argument("--full", type=Path, required=True, help="output file for the original complete notes text")
     parser.add_argument("--marker", help="append a workflow marker within the release body limit")
     parser.add_argument("--check", action="store_true", help="fail with status 1 when outputs differ; never create or modify files")
     args = parser.parse_args(argv)

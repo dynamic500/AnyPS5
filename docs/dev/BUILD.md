@@ -90,7 +90,18 @@ Changes to the converter or its frontend reach Pages through a release. Progress
 
 Run this command from a Git checkout that contains the commit recorded in the release's converter ZIP. If a shallow checkout is missing that commit, fetch the matching release tag from the upstream repository first.
 
-`tools/prepare_release_notes.py --input <notes> --body <body> --full <full>` prepares GitHub release notes that fit the release-body limit (`BODY_LIMIT` characters in the script): the short body goes to `--body` and the full notes to `--full`. With `--check` it writes nothing and exits with status 1 when either output is missing or stale.
+`tools/prepare_release_notes.py --input <notes.json> --body <body.md> --full <full.md>` reads a UTF-8 JSON object with a string `body` field. `--body` is the output path for the prepared release text, which may have its first `What's Changed` section removed to fit the release-body limit (`BODY_LIMIT` characters in the script). `--full` is the output path for the original complete notes text. Both outputs are UTF-8 text files; all three paths must name distinct files.
+
+From the repository root:
+
+```sh
+cat > notes.json <<'EOF'
+{"body": "## Notes\n- Example change.\n"}
+EOF
+python3 tools/prepare_release_notes.py --input notes.json --body release-body.md --full release-notes.md
+```
+
+Add `--check` to the same command to compare both existing outputs with the expected text without creating or modifying files. It exits with status 0 when both match, or 1 when either output is missing or stale.
 
 ## Commands
 
